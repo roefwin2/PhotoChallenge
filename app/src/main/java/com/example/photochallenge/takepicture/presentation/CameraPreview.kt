@@ -17,7 +17,6 @@ fun CameraPreview(
         factory = { context ->
             PreviewView(context).apply {
                 this.controller = controller
-                controller.unbind()
                 controller.bindToLifecycle(lifecycleOwner)
             }
         },

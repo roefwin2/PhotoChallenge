@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
+import com.example.photochallenge.core.presentation.PaywallOverlay
 import com.example.photochallenge.navigation.PhotoChallengeNavigation
 import com.example.photochallenge.takepicture.presentation.PhotoBottomSheetContent
 import com.example.photochallenge.ui.theme.PhotoChallengeTheme
@@ -66,23 +67,30 @@ class MainActivity : ComponentActivity() {
                     scaffoldState = scaffoldState,
                     sheetPeekHeight = 0.dp,
                     sheetContent = {
-                        PhotoBottomSheetContent(
-                            bitmap = state.value.bitmap,
-                            modifier = Modifier.fillMaxWidth(),
-                            onValidatePhoto = {
-                                viewModel.onSavePhoto()
-                                navController.navigate("voting")
-                                coroutineScope.launch {
-                                    scaffoldState.bottomSheetState.hide()
-                                }
-                            },
-                            onDeletePhoto = {
+                        PaywallOverlay(
+                            visible = state.value.isPaywallVisible,
+                            onSubscribeClick = {
                                 viewModel.onDeletedPhoto()
                                 coroutineScope.launch {
                                     scaffoldState.bottomSheetState.hide()
                                 }
                             }
-                        )
+                        ) {
+                            PhotoBottomSheetContent(
+                                bitmap = state.value.bitmap,
+                                modifier = Modifier.fillMaxWidth(),
+                                onValidatePhoto = {
+                                    viewModel.onSavePhoto()
+                                    navController.navigate("voting")
+                                    coroutineScope.launch {
+                                        scaffoldState.bottomSheetState.hide()
+                                    }
+                                },
+                                retryPhoto = {
+                                    viewModel.onRetryPhoto()
+                                }
+                            )
+                        }
                     },
                 ) { paddingValues ->
                     PhotoChallengeNavigation(
