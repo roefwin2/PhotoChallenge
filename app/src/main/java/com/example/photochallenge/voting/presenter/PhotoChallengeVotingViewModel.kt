@@ -2,6 +2,7 @@ package com.example.photochallenge.voting.presenter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.photochallenge.authentification.domain.PhotoChallengeAuthRepository
 import com.example.photochallenge.users.domain.models.PhotoChallengePicture
 import com.example.photochallenge.voting.domain.PhotoChallengeVotingRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class PhotoChallengeVotingViewModel(
     private val votingRepository: PhotoChallengeVotingRepository,
+    private val photoChallengeAuthRepository: PhotoChallengeAuthRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(VotingState())
     val state: StateFlow<VotingState> = _state.asStateFlow()
@@ -22,13 +24,15 @@ class PhotoChallengeVotingViewModel(
     }
 
     private fun fetchUsers() {
+        val currentUser = photoChallengeAuthRepository.currentUserId ?: return
         viewModelScope.launch {
             votingRepository.getUsers().collectLatest { result ->
                 result.onSuccess { users ->
                     _state.update { currentState ->
                         currentState.copy(
                             photos = users.map { it.currentPictureUri!! },
-                            remainingVotes = users.firstOrNull()?.remainingVotes ?: 0
+                            remainingVotes = users.firstOrNull { it.userId == currentUser }?.remainingVotes
+                                ?: 0
                         )
                     }
                 }
@@ -39,10 +43,11 @@ class PhotoChallengeVotingViewModel(
     fun voteForPhoto(add: Int, photoIndex: Int) {
         viewModelScope.launch {
             votingRepository.voteForPhoto(add, photoIndex).collectLatest { result ->
-                result.onSuccess {}
+                result.onSuccess {
+                    fetchUsers()
+                }
             }
         }
-        fetchUsers()
     }
 
     fun setCurrentPage(page: Int) {

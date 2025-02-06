@@ -11,8 +11,11 @@ import com.example.photochallenge.authentification.domain.PhotoChallengeAuthRepo
 import com.example.photochallenge.users.domain.models.PhotoChallengeUser
 import com.example.photochallenge.utils.ImageStorage
 import com.example.photochallenge.voting.domain.PhotoChallengeVotingRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID
@@ -23,37 +26,8 @@ class PhotoChallengeVotingRepositoryImpl(
     private val context: Context,
     private val imageStorage: ImageStorage
 ) : PhotoChallengeVotingRepository {
-    override fun voteForPhoto(add: Int, photoIndex: Int): Flow<Result<Unit>> = flow {
-        // Récupérer l'ID de l'utilisateur courant
-        val currentUserId = authRepository.currentUserId
-            ?: throw IllegalStateException("Aucun utilisateur connecté")
 
-        // Vérifier les votes restants
-        val remainingVotes = userDao.getRemainingVotes(currentUserId)
-            ?: throw IllegalStateException("Utilisateur introuvable")
-
-        // Vérifier si l'utilisateur peut voter
-        if (add > 0 && remainingVotes <= 0) {
-            throw IllegalStateException("Plus de votes disponibles")
-        }
-
-        // Récupérer tous les utilisateurs pour trouver celui à l'index donné
-        val users = userDao.getAllUsers()
-        if (photoIndex >= users.size) {
-            throw IndexOutOfBoundsException("Index de photo invalide")
-        }
-
-        // Récupérer l'utilisateur cible
-        val targetUser = users[photoIndex]
-
-        // Effectuer les mises à jour dans une transaction
-        userDao.incrementVoteCount(targetUser.id, add)
-
-        // Mettre à jour le nombre de votes restants de l'utilisateur courant
-        userDao.updateRemainingVotes(currentUserId, -add)
-    }
-
-    override fun getUsers(): Flow<Result<List<PhotoChallengeUser>>> = flow {
+    override fun initMockUsers() {
         val imageSet = setOf(
             R.drawable.enerve,
             R.drawable.vomi,
@@ -77,14 +51,59 @@ class PhotoChallengeVotingRepositoryImpl(
                 remainingVotes = 5
             )
         }
-        mockUsers.forEach { user ->
-            userDao.insertUser(user)
+        CoroutineScope(Dispatchers.Default).launch {
+            userDao.deleteAllUsers()
+            mockUsers.forEach { user ->
+                userDao.insertUser(user)
+            }
         }
+    }
+
+    override fun voteForPhoto(add: Int, photoIndex: Int): Flow<Result<Unit>> = flow {
+        try {
+            // Récupérer l'ID de l'utilisateur courant
+            val currentUserId = authRepository.currentUserId
+                ?: throw IllegalStateException("Aucun utilisateur connecté")
+
+            // Vérifier les votes restants
+            val remainingVotes = userDao.getRemainingVotes(currentUserId)
+                ?: throw IllegalStateException("Utilisateur introuvable")
+
+            // Vérifier si l'utilisateur peut voter
+            if (add > 0 && remainingVotes <= 0) {
+                throw IllegalStateException("Plus de votes disponibles")
+            }
+
+            // Récupérer tous les utilisateurs pour trouver celui à l'index donné
+            val users = userDao.getAllUsers()
+            if (photoIndex >= users.size) {
+                throw IndexOutOfBoundsException("Index de photo invalide")
+            }
+
+            // Récupérer l'utilisateur cible
+            val targetUser = users[photoIndex]
+
+            // Effectuer les mises à jour dans une transaction
+            userDao.incrementVoteCount(targetUser.id, add)
+
+            // Mettre à jour le nombre de votes restants de l'utilisateur courant
+            userDao.updateRemainingVotes(currentUserId, -add)
+            emit(Result.success(Unit))
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
+
+    override fun getUsers(): Flow<Result<List<PhotoChallengeUser>>> = flow {
         val users = userDao.getAllUsers()
         emit(Result.success(users.map { it.toPhotoChallengeUser(imageStorage = imageStorage) }))
     }
 
-   private fun copyDrawableToInternalStorage(context: Context, drawableId: Int, fileName: String): String {
+    private fun copyDrawableToInternalStorage(
+        context: Context,
+        drawableId: Int,
+        fileName: String
+    ): String {
         val bitmap = BitmapFactory.decodeResource(context.resources, drawableId)
         val file = File(context.filesDir, fileName)
 

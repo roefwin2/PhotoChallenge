@@ -21,6 +21,9 @@ interface PhotoChallengeUserDao {
     @Delete
     suspend fun deleteUser(user: PhotoChallengeUserEntity)
 
+    @Query("DELETE FROM challenge_users")
+    suspend fun deleteAllUsers()
+
     @Query("UPDATE challenge_users SET votingCount = votingCount + :increment WHERE id = :userId")
     suspend fun incrementVoteCount(userId: String, increment: Int)
 

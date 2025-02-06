@@ -30,6 +30,7 @@ suspend fun PhotoChallengeUserEntity.toPhotoChallengeUser(imageStorage: ImageSto
         password = password,
         currentPictureUri = PhotoChallengePicture(
             bitmap = byteArrayToBitmap(picturePath?.let { imageStorage.getImageFile(it) }),
+            votingCount = votingCount
         ),
         currentScore = 100,
         remainingVotes = remainingVotes
