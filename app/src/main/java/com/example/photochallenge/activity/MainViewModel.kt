@@ -49,7 +49,7 @@ class MainViewModel(
         )
     }
 
-    fun onRetryPhoto() {
+    fun onPremiumFeature() {
         _state.value = state.value.copy(
             isPaywallVisible = true
         )

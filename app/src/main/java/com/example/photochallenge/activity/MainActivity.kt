@@ -33,10 +33,8 @@ import com.example.photochallenge.core.presentation.PaywallOverlay
 import com.example.photochallenge.navigation.PhotoChallengeNavigation
 import com.example.photochallenge.takepicture.presentation.PhotoBottomSheetContent
 import com.example.photochallenge.ui.theme.PhotoChallengeTheme
-import com.example.photochallenge.utils.ImageStorage
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
 
@@ -87,7 +85,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 },
                                 retryPhoto = {
-                                    viewModel.onRetryPhoto()
+                                    viewModel.onPremiumFeature()
                                 }
                             )
                         }
@@ -98,15 +96,19 @@ class MainActivity : ComponentActivity() {
                         controller = controller,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(paddingValues)
-                    ) {
-                        takePhoto(controller) {
-                            coroutineScope.launch {
-                                viewModel.onTakenPhoto(it)
-                                scaffoldState.bottomSheetState.expand()
+                            .padding(paddingValues),
+                        onClickToTakePhoto = {
+                            takePhoto(controller) {
+                                coroutineScope.launch {
+                                    viewModel.onTakenPhoto(it)
+                                    scaffoldState.bottomSheetState.expand()
+                                }
                             }
+                        },
+                        onPremiumFeatureClick = {
+                            viewModel.onPremiumFeature()
                         }
-                    }
+                    )
                 }
             }
         }
