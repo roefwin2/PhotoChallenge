@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.photochallenge.authentification.presentation.login.PhotoChallengeAuthScreen
 import com.example.photochallenge.premiumfeatures.presentation.PremiumScreen
+import com.example.photochallenge.standing.presentation.PhotoChallengeStandingScreen
 import com.example.photochallenge.takepicture.presentation.CameraPreviewWithPicture
 import com.example.photochallenge.voting.presenter.PhotoChallengeVotingScreen
 
@@ -44,7 +45,7 @@ fun PhotoChallengeNavigation(
     onPremiumFeatureClick: ((String) -> Unit)
 ) {
     val bottomNavItems = listOf(
-        BottomNavItem("home", Icons.Default.Home, "Home"),
+        BottomNavItem("standing", Icons.Default.Home, "Standing"),
         BottomNavItem("takePicture", Icons.Default.PhotoCamera, "Photo"),
         BottomNavItem("voting", Icons.Default.HowToVote, "Vote"),
         BottomNavItem("premium", Icons.Default.Star, "Premium")
@@ -92,13 +93,13 @@ fun PhotoChallengeNavigation(
         ) {
             composable("auth") {
                 PhotoChallengeAuthScreen(onAuthSuccess = {
-                    navController.navigate("home") {
+                    navController.navigate("standing") {
                         popUpTo("auth") { inclusive = true }
                     }
                 })
             }
-            composable("home") {
-                Text("Home", modifier = Modifier.padding(16.dp), fontSize = 24.sp)
+            composable("standing") {
+                PhotoChallengeStandingScreen()
             }
             composable("takePicture") {
                 CameraPreviewWithPicture(
