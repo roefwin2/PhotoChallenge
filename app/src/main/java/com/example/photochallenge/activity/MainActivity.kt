@@ -29,13 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
+import com.example.photochallenge.core.presentation.PaywallOverlay
 import com.example.photochallenge.navigation.PhotoChallengeNavigation
 import com.example.photochallenge.takepicture.presentation.PhotoBottomSheetContent
 import com.example.photochallenge.ui.theme.PhotoChallengeTheme
-import com.example.photochallenge.utils.ImageStorage
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
 
@@ -66,23 +65,30 @@ class MainActivity : ComponentActivity() {
                     scaffoldState = scaffoldState,
                     sheetPeekHeight = 0.dp,
                     sheetContent = {
-                        PhotoBottomSheetContent(
-                            bitmap = state.value.bitmap,
-                            modifier = Modifier.fillMaxWidth(),
-                            onValidatePhoto = {
-                                viewModel.onSavePhoto()
-                                navController.navigate("voting")
-                                coroutineScope.launch {
-                                    scaffoldState.bottomSheetState.hide()
-                                }
-                            },
-                            onDeletePhoto = {
+                        PaywallOverlay(
+                            visible = state.value.isPaywallVisible,
+                            onSubscribeClick = {
                                 viewModel.onDeletedPhoto()
                                 coroutineScope.launch {
                                     scaffoldState.bottomSheetState.hide()
                                 }
                             }
-                        )
+                        ) {
+                            PhotoBottomSheetContent(
+                                bitmap = state.value.bitmap,
+                                modifier = Modifier.fillMaxWidth(),
+                                onValidatePhoto = {
+                                    viewModel.onSavePhoto()
+                                    navController.navigate("voting")
+                                    coroutineScope.launch {
+                                        scaffoldState.bottomSheetState.hide()
+                                    }
+                                },
+                                retryPhoto = {
+                                    viewModel.onPremiumFeature()
+                                }
+                            )
+                        }
                     },
                 ) { paddingValues ->
                     PhotoChallengeNavigation(
@@ -90,15 +96,19 @@ class MainActivity : ComponentActivity() {
                         controller = controller,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(paddingValues)
-                    ) {
-                        takePhoto(controller) {
-                            coroutineScope.launch {
-                                viewModel.onTakenPhoto(it)
-                                scaffoldState.bottomSheetState.expand()
+                            .padding(paddingValues),
+                        onClickToTakePhoto = {
+                            takePhoto(controller) {
+                                coroutineScope.launch {
+                                    viewModel.onTakenPhoto(it)
+                                    scaffoldState.bottomSheetState.expand()
+                                }
                             }
+                        },
+                        onPremiumFeatureClick = {
+                            viewModel.onPremiumFeature()
                         }
-                    }
+                    )
                 }
             }
         }

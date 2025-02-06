@@ -44,11 +44,19 @@ class MainViewModel(
 
     fun onDeletedPhoto() {
         _state.value = state.value.copy(
-            bitmap = null
+            bitmap = null,
+            isPaywallVisible = false
+        )
+    }
+
+    fun onPremiumFeature() {
+        _state.value = state.value.copy(
+            isPaywallVisible = true
         )
     }
 }
 
 data class MainState(
-    val bitmap: Bitmap? = null
+    val bitmap: Bitmap? = null,
+    val isPaywallVisible: Boolean = false
 )

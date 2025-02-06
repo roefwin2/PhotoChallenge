@@ -12,6 +12,7 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.0"
 composeBom = "2024.04.01"
+material3 = "1.1.2"
 materialIconsExtended = "1.5.1"
 navigationCompose = "2.7.7"
 roomRuntime = "2.6.1"
@@ -46,6 +47,7 @@ koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-android" }
 koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin-android-compose" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

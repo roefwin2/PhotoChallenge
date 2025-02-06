@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -28,7 +28,7 @@ fun PhotoBottomSheetContent(
     bitmap: Bitmap?,
     modifier: Modifier = Modifier,
     onValidatePhoto: () -> Unit = {},
-    onDeletePhoto: () -> Unit = {}
+    retryPhoto: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -66,14 +66,14 @@ fun PhotoBottomSheetContent(
                 }
                 IconButton(
                     onClick = {
-                        onDeletePhoto.invoke()
+                        retryPhoto.invoke()
                     },
                     modifier = Modifier
                         .offset(8.dp, 8.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete photo"
+                        imageVector = Icons.Default.Replay,
+                        contentDescription = "Retry photo"
                     )
                 }
             }

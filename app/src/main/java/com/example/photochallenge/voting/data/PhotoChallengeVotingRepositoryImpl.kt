@@ -87,6 +87,9 @@ class PhotoChallengeVotingRepositoryImpl(
             userDao.incrementVoteCount(targetUser.id, add)
 
             // Mettre à jour le nombre de votes restants de l'utilisateur courant
+            if (targetUser.votingCount <= 0 && add < 0) {
+                return@flow
+            }
             userDao.updateRemainingVotes(currentUserId, -add)
             emit(Result.success(Unit))
         } catch (e: Exception) {
