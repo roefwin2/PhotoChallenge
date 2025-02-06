@@ -10,9 +10,19 @@ class MainViewModel : ViewModel() {
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
-    fun onTakenPhoto(bitmap: Bitmap?) {
+    fun onTakenPhoto(bitmap: Bitmap) {
         _state.value = state.value.copy(
             bitmap = bitmap
+        )
+    }
+
+    fun onSavePhoto() {
+
+    }
+
+    fun onDeletedPhoto() {
+        _state.value = state.value.copy(
+            bitmap = null
         )
     }
 }

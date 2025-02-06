@@ -26,7 +26,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PhotoBottomSheetContent(
     bitmap: Bitmap?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onValidatePhoto: () -> Unit = {},
+    onDeletePhoto: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -53,6 +55,7 @@ fun PhotoBottomSheetContent(
             ) {
                 IconButton(
                     onClick = {
+                        onValidatePhoto.invoke()
                     },
                     modifier = Modifier.offset(8.dp, 8.dp)
                 ) {
@@ -63,7 +66,7 @@ fun PhotoBottomSheetContent(
                 }
                 IconButton(
                     onClick = {
-
+                        onDeletePhoto.invoke()
                     },
                     modifier = Modifier
                         .offset(8.dp, 8.dp)
