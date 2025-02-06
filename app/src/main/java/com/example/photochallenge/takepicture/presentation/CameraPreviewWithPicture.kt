@@ -2,6 +2,8 @@ package com.example.photochallenge.takepicture.presentation
 
 import androidx.camera.core.CameraSelector
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,14 +21,26 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.photochallenge.R
 
 @Composable
 fun CameraPreviewWithPicture(
     controller: LifecycleCameraController,
     modifier: Modifier = Modifier,
+    emojiSet: Set<Int> = setOf(
+        R.drawable.grin,
+        R.drawable.pensive,
+        R.drawable.innocent,
+        R.drawable.face_vomiting,
+        R.drawable.ic_launcher_foreground
+    ),
     onClickToTakePhoto: () -> Unit,
 ) {
+    val selectedEmoji = emojiSet.random()
     Box(
         modifier = modifier.padding(vertical = 60.dp)
     ) {
@@ -34,8 +48,21 @@ fun CameraPreviewWithPicture(
             controller = controller,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 60.dp)
         )
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+                .size(100.dp)
+                .align(Alignment.TopEnd)
+                .background(Color.Black.copy(alpha = 0.5f))
+        ) {
+            Image(
+                painter = painterResource(selectedEmoji),
+                contentDescription = "Image superposée",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
