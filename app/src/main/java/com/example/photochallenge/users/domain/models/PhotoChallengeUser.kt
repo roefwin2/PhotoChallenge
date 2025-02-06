@@ -1,6 +1,7 @@
 package com.example.photochallenge.users.domain.models
 
 data class PhotoChallengeUser(
+    val userId: String,
     val firstname: String,
     val lastname: String,
     val email: String,

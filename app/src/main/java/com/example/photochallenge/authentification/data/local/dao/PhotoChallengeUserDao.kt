@@ -20,4 +20,19 @@ interface PhotoChallengeUserDao {
 
     @Delete
     suspend fun deleteUser(user: PhotoChallengeUserEntity)
+
+    @Query("UPDATE challenge_users SET votingCount = votingCount + :increment WHERE id = :userId")
+    suspend fun incrementVoteCount(userId: String, increment: Int)
+
+    @Query("UPDATE challenge_users SET remainingVotes = remainingVotes + :increment WHERE id = :userId")
+    suspend fun updateRemainingVotes(userId: String, increment: Int)
+
+    @Query("UPDATE challenge_users SET picturePath = :picturePath WHERE id = :userId")
+    suspend fun updateCurrentPicture(userId: String,picturePath: String)
+
+    @Query("SELECT remainingVotes FROM challenge_users WHERE id = :userId")
+    suspend fun getRemainingVotes(userId: String): Int?
+
+    @Query("SELECT * FROM challenge_users")
+    suspend fun getAllUsers(): List<PhotoChallengeUserEntity>
 }

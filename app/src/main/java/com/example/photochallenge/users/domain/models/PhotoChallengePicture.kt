@@ -1,8 +1,8 @@
 package com.example.photochallenge.users.domain.models
 
-import android.net.Uri
+import android.graphics.Bitmap
 
 data class PhotoChallengePicture(
-    val uri: Uri,
+    val bitmap: Bitmap?,
     val votingCount: Int = 0
 )

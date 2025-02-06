@@ -3,6 +3,7 @@ package com.example.photochallenge.authentification.domain
 import kotlinx.coroutines.flow.Flow
 
 interface PhotoChallengeAuthRepository {
+   val  currentUserId: String?
     fun createUser(
         lastname: String,
         email: String,

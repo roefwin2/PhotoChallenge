@@ -7,7 +7,7 @@ import com.example.photochallenge.authentification.data.local.entity.PhotoChalle
 
 @Database(
     entities = [PhotoChallengeUserEntity::class],
-    version = 1,
+    version = 4,
     exportSchema = false
 )
 abstract class PhotoChallengeDatabase : RoomDatabase() {
