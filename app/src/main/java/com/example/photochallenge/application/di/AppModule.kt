@@ -10,7 +10,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appModule = module {
-    single{ provideDatabase(androidContext()) }
+    single { provideDatabase(androidContext()) }
     single<PhotoChallengeUserDao> { get<PhotoChallengeDatabase>().userDao() }
     viewModelOf(::MainViewModel)
 }
@@ -20,5 +20,5 @@ private fun provideDatabase(context: Context): PhotoChallengeDatabase {
         context,
         PhotoChallengeDatabase::class.java,
         "service_app_database"
-    ).build()
+    ).fallbackToDestructiveMigration().build()
 }

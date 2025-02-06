@@ -10,7 +10,9 @@ import java.util.UUID
 class PhotoChallengeAuthRepositoryImpl(
     private val userDao: PhotoChallengeUserDao
 ) : PhotoChallengeAuthRepository {
-    private var currentUserId: String? = null
+    private var _currentUserId: String? = null
+    override val currentUserId: String?
+        get() = _currentUserId
 
     override fun createUser(
         lastname: String,
@@ -23,10 +25,10 @@ class PhotoChallengeAuthRepositoryImpl(
                 lastname = lastname,
                 email = email,
                 password = password,
-                currentPictureUri = null
+                picturePath = null
             )
             userDao.insertUser(user)
-            currentUserId = user.id
+            _currentUserId = user.id
             emit(Result.success(Unit))
         } catch (e: Exception) {
             emit(Result.failure(e))
@@ -37,7 +39,7 @@ class PhotoChallengeAuthRepositoryImpl(
         try {
             val user = userDao.getUser(email, password)
             if (user != null) {
-                currentUserId = user.id
+                _currentUserId = user.id
                 emit(Result.success(Unit))
             } else {
                 emit(Result.failure(Exception("User not found")))
@@ -48,7 +50,7 @@ class PhotoChallengeAuthRepositoryImpl(
     }
 
     override fun logout(): Result<Unit> {
-        currentUserId = null
+        _currentUserId = null
         return Result.success(Unit)
     }
 

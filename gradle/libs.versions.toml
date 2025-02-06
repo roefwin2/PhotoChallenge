@@ -15,6 +15,7 @@ composeBom = "2024.04.01"
 materialIconsExtended = "1.5.1"
 navigationCompose = "2.7.7"
 roomRuntime = "2.6.1"
+coil = "2.4.0"
 
 [libraries]
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraxVersion" }
@@ -44,6 +45,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin-android" }
 koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin-android-compose" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -28,14 +28,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.navigation.compose.rememberNavController
 import com.example.photochallenge.navigation.PhotoChallengeNavigation
 import com.example.photochallenge.takepicture.presentation.PhotoBottomSheetContent
 import com.example.photochallenge.ui.theme.PhotoChallengeTheme
+import com.example.photochallenge.utils.ImageStorage
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!hasRequiredPermission()) {
@@ -47,6 +51,7 @@ class MainActivity : ComponentActivity() {
                 val coroutineScope = rememberCoroutineScope()
                 val viewModel: MainViewModel = koinViewModel()
                 val state = viewModel.state.collectAsState()
+                val navController = rememberNavController()
                 val scaffoldState = rememberBottomSheetScaffoldState(
                     bottomSheetState = rememberStandardBottomSheetState(skipHiddenState = false)
                 )
@@ -66,6 +71,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxWidth(),
                             onValidatePhoto = {
                                 viewModel.onSavePhoto()
+                                navController.navigate("voting")
                                 coroutineScope.launch {
                                     scaffoldState.bottomSheetState.hide()
                                 }
@@ -80,6 +86,7 @@ class MainActivity : ComponentActivity() {
                     },
                 ) { paddingValues ->
                     PhotoChallengeNavigation(
+                        navController = navController,
                         controller = controller,
                         modifier = Modifier
                             .fillMaxSize()

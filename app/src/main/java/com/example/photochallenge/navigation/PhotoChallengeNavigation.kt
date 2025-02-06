@@ -4,19 +4,20 @@ import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.photochallenge.authentification.presentation.login.PhotoChallengeAuthScreen
 import com.example.photochallenge.takepicture.presentation.CameraPreviewWithPicture
+import com.example.photochallenge.voting.presenter.PhotoChallengeVotingScreen
 
 @Composable
 fun PhotoChallengeNavigation(
+    navController: NavHostController,
     controller: LifecycleCameraController,
     modifier: Modifier = Modifier,
     onClickToTakePhoto: (() -> Unit)
 ) {
-    val navController = rememberNavController()
     NavHost(
         modifier = modifier.fillMaxSize(),
         navController = navController,
@@ -31,6 +32,9 @@ fun PhotoChallengeNavigation(
             CameraPreviewWithPicture(controller = controller, onClickToTakePhoto = {
                 onClickToTakePhoto.invoke()
             })
+        }
+        composable("voting") {
+            PhotoChallengeVotingScreen()
         }
     }
 }
