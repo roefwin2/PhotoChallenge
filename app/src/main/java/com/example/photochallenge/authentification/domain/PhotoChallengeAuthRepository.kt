@@ -1,13 +1,14 @@
 package com.example.photochallenge.authentification.domain
 
+import kotlinx.coroutines.flow.Flow
+
 interface PhotoChallengeAuthRepository {
     fun createUser(
-        firstname: String,
         lastname: String,
         email: String,
         password: String
-    ): Result<Unit>
+    ): Flow<Result<Unit>>
 
-    fun login(email: String, password: String): Result<Unit>
+    fun login(email: String, password: String): Flow<Result<Unit>>
     fun logout(): Result<Unit>
 }
