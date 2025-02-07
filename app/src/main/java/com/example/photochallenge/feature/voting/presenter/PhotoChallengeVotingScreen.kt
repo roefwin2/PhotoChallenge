@@ -65,7 +65,6 @@ fun PhotoChallengeVotingScreen(
                     contentScale = ContentScale.Crop
                 )
 
-                // Compteur de votes en haut à droite
                 Surface(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
@@ -92,7 +91,6 @@ fun PhotoChallengeVotingScreen(
             }
         }
 
-        // Zone de contrôle en bas
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -100,7 +98,6 @@ fun PhotoChallengeVotingScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Votes restants
             Surface(
                 color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
                 shape = MaterialTheme.shapes.medium
@@ -112,7 +109,6 @@ fun PhotoChallengeVotingScreen(
                 )
             }
 
-            // Contrôles de vote
             Row(
                 modifier = Modifier
                     .background(
@@ -159,7 +155,6 @@ fun PhotoChallengeVotingScreen(
                 }
             }
 
-            // Indicateurs de page
             Row(
                 modifier = Modifier
                     .padding(top = 8.dp),

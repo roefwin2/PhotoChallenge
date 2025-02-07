@@ -21,7 +21,7 @@ interface PhotoChallengeUserDao {
 
     @Delete
     suspend fun deleteUser(user: PhotoChallengeUserEntity)
-    
+
     @Query("DELETE FROM challenge_users")
     suspend fun deleteAllUsers()
 

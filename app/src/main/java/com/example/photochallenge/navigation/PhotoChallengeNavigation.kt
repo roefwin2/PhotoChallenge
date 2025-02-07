@@ -25,13 +25,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.photochallenge.activity.MainViewModel
+import androidx.navigation.navDeepLink
+import com.example.photochallenge.activity.MainActivity
 import com.example.photochallenge.feature.authentification.presentation.login.PhotoChallengeAuthScreen
 import com.example.photochallenge.feature.premiumfeatures.presentation.PremiumScreen
 import com.example.photochallenge.feature.standing.presentation.PhotoChallengeStandingScreen
 import com.example.photochallenge.feature.takepicture.presentation.CameraPreviewWithPicture
 import com.example.photochallenge.feature.voting.presenter.PhotoChallengeVotingScreen
-import org.koin.androidx.compose.koinViewModel
 
 
 data class BottomNavItem(
@@ -58,7 +58,7 @@ fun PhotoChallengeNavigation(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // N'afficher la BottomBar que sur certains écrans
+   // Avoid bottom bar on auth screen
     val shouldShowBottomBar = currentRoute != "auth"
 
     Scaffold(
@@ -72,13 +72,11 @@ fun PhotoChallengeNavigation(
                             selected = currentRoute == item.route,
                             onClick = {
                                 navController.navigate(item.route) {
-                                    // Pop jusqu'au départ pour éviter d'empiler les écrans
+
                                     popUpTo(navController.graph.startDestinationId) {
                                         saveState = true
                                     }
-                                    // Évite les copies multiples de la même destination
                                     launchSingleTop = true
-                                    // Restaure l'état lors de la reselection
                                     restoreState = true
                                 }
                             }
@@ -126,10 +124,20 @@ fun PhotoChallengeNavigation(
                     }
                 })
             }
-            composable("standing") {
+            composable("standing", deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "android-app://androidx.navigation/standing"
+                    action = MainActivity.NOTIFICATION_DAILY_STANDING
+                }
+            )) {
                 PhotoChallengeStandingScreen()
             }
-            composable("takePicture") {
+            composable("takePicture", deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "android-app://androidx.navigation/takePicture"
+                    action = MainActivity.NOTIFICATION_DAILY_CHALLENGE
+                }
+            )) {
                 CameraPreviewWithPicture(
                     controller = controller,
                     onClickToTakePhoto = { onClickToTakePhoto.invoke() }

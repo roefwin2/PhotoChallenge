@@ -4,8 +4,10 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,13 +47,6 @@ fun CameraPreviewWithPicture(
     Box(
         modifier = modifier.padding(vertical = 60.dp)
     ) {
-        Text(
-            text = "Imiter l'image à droite",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 24.dp)
-        )
-
         CameraPreview(
             controller = controller,
             modifier = Modifier
@@ -60,20 +55,11 @@ fun CameraPreviewWithPicture(
                     RoundedCornerShape(16.dp)
                 )
         )
-        Box(
+        ImageInstruction(
             modifier = Modifier
-                .padding(16.dp)
-                .size(100.dp)
-                .align(Alignment.TopEnd)
-                .background(Color.Black.copy(alpha = 0.5f))
-        ) {
-            Image(
-                painter = painterResource(selectedEmoji),
-                contentDescription = "Image superposée",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-        }
+                .align(Alignment.TopEnd),
+            emoji = selectedEmoji
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -121,6 +107,46 @@ fun CameraPreviewWithPicture(
                     contentDescription = "Camera switch"
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun ImageInstruction(
+    emoji: Int,
+    modifier: Modifier = Modifier,
+    message: String = "Imiter l'image en bas"
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = message,
+            fontSize = 8.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .size(100.dp)
+                .border(
+                    width = 4.dp,
+                    color = Color.Gray,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(emoji),
+                contentDescription = "Image superposée",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
         }
     }
 }

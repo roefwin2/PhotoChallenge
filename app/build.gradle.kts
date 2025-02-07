@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.android.compose)
+    implementation(libs.koin.androidx.workmanager)
 
     //Camera
     implementation(libs.androidx.camera.core)

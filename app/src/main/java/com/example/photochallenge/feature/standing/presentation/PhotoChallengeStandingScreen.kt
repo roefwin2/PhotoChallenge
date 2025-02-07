@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.photochallenge.feature.authentification.domain.mdoels.PhotoChallengeUser
+import com.example.photochallenge.feature.authentification.domain.models.PhotoChallengeUser
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -58,11 +58,7 @@ fun PhotoChallengeStandingScreen(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(24.dp)
             )
-
-            // Top Section avec les 3 premiers
             TopThreeSection(users.take(3))
-
-            // Liste des autres utilisateurs
             UsersList(users.drop(3))
         }
     }
@@ -73,15 +69,15 @@ fun TopThreeSection(topUsers: List<PhotoChallengeUser>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(16.dp)
+            .clip(MaterialTheme.shapes.medium)
+            .background(MaterialTheme.colorScheme.primaryContainer)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.Bottom
         ) {
-            // 2ème place
             TopUserItem(
                 user = topUsers.getOrNull(1),
                 modifier = Modifier.weight(1f),
@@ -89,7 +85,6 @@ fun TopThreeSection(topUsers: List<PhotoChallengeUser>) {
                 medalColor = Color(0xFFC0C0C0)
             )
 
-            // 1ère place
             TopUserItem(
                 user = topUsers.getOrNull(0),
                 modifier = Modifier.weight(1f),
@@ -97,7 +92,6 @@ fun TopThreeSection(topUsers: List<PhotoChallengeUser>) {
                 medalColor = Color(0xFFFFD700)
             )
 
-            // 3ème place
             TopUserItem(
                 user = topUsers.getOrNull(2),
                 modifier = Modifier.weight(1f),

@@ -1,4 +1,4 @@
-package com.example.photochallenge.feature.authentification.domain.mdoels
+package com.example.photochallenge.feature.authentification.domain.models
 
 data class PhotoChallengeUser(
     val userId: String,

@@ -8,7 +8,7 @@ import com.example.photochallenge.feature.authentification.data.local.dao.PhotoC
 import com.example.photochallenge.feature.authentification.data.local.entity.PhotoChallengeUserEntity
 import com.example.photochallenge.feature.authentification.data.local.entity.toPhotoChallengeUser
 import com.example.photochallenge.feature.authentification.domain.PhotoChallengeAuthRepository
-import com.example.photochallenge.feature.authentification.domain.mdoels.PhotoChallengeUser
+import com.example.photochallenge.feature.authentification.domain.models.PhotoChallengeUser
 import com.example.photochallenge.core.utils.ImageStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -107,7 +107,7 @@ class PhotoChallengeAuthRepositoryImpl(
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
         }
 
-        return file.name // Voici le chemin du fichier sur l'appareil
+        return file.name
     }
 
     override fun logout(): Result<Unit> {
