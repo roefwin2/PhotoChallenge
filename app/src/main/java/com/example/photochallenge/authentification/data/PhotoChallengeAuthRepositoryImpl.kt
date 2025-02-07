@@ -25,6 +25,7 @@ class PhotoChallengeAuthRepositoryImpl(
                 lastname = lastname,
                 email = email,
                 password = password,
+                remainingVotes = 5,
                 picturePath = null
             )
             userDao.insertUser(user)

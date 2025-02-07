@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.photochallenge.authentification.data.local.entity.bitmapToByteArray
 import com.example.photochallenge.takepicture.domain.PhotoChallengeTakePictureRepository
 import com.example.photochallenge.utils.ImageStorage
+import com.example.photochallenge.voting.data.MockData
 import com.example.photochallenge.voting.domain.PhotoChallengeVotingRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,13 +18,20 @@ class MainViewModel(
     private val photoChallengeVotingRepository: PhotoChallengeVotingRepository,
     private val imageStorage: ImageStorage
 ) : ViewModel() {
-    init {
-        photoChallengeVotingRepository.initMockUsers()
-    }
 
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
+    init {
+        val mockUsers = setOf(MockData.Angry,MockData.Sad)
+        val selectedData = mockUsers.random()
+        _state.value = state.value.copy(
+            selectedEmoji = selectedData.emojis
+        )
+        viewModelScope.launch(Dispatchers.Default) {
+            photoChallengeVotingRepository.initMockUsers(selectedData.userPictures)
+        }
+    }
     fun onTakenPhoto(bitmap: Bitmap) {
         _state.value = state.value.copy(
             bitmap = bitmap
@@ -58,5 +66,6 @@ class MainViewModel(
 
 data class MainState(
     val bitmap: Bitmap? = null,
-    val isPaywallVisible: Boolean = false
+    val isPaywallVisible: Boolean = false,
+    val selectedEmoji: Int? = null
 )

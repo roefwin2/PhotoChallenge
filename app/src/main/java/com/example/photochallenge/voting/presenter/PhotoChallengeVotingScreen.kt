@@ -53,10 +53,9 @@ fun PhotoChallengeVotingScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(48.dp)
+            .padding(36.dp)
             .clip(MaterialTheme.shapes.medium)
     ) {
-        // Carousel avec les photos
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
@@ -69,7 +68,6 @@ fun PhotoChallengeVotingScreen(
                     contentScale = ContentScale.Crop
                 )
 
-                // Overlay avec le nombre de votes
                 Surface(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -96,7 +94,6 @@ fun PhotoChallengeVotingScreen(
             }
         }
 
-        // Contrôles de vote
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -104,7 +101,6 @@ fun PhotoChallengeVotingScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Indicateur de votes restants
             Surface(
                 color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
                 shape = MaterialTheme.shapes.medium

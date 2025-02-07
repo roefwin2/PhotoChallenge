@@ -27,27 +27,20 @@ class PhotoChallengeVotingRepositoryImpl(
     private val imageStorage: ImageStorage
 ) : PhotoChallengeVotingRepository {
 
-    override fun initMockUsers() {
-        val imageSet = setOf(
-            R.drawable.enerve,
-            R.drawable.vomi,
-            R.drawable.enerve,
-            R.drawable.content,
-            R.drawable.content
-        )
-        val mockUsers = List(5) {
+    override fun initMockUsers(imageSet: Set<Int>) {
+        val mockUsers = imageSet.map {
             val imagePah = copyDrawableToInternalStorage(
                 context,
-                imageSet.random(),
+                it,
                 "image$it.png"
             )
             PhotoChallengeUserEntity(
                 id = UUID.randomUUID().toString(),
-                lastname = "lastname $it",
+                lastname = "User $it",
                 email = "email $it",
                 password = "password $it",
                 picturePath = imagePah,
-                votingCount = 0,
+                votingCount = (0..8).random(),
                 remainingVotes = 5
             )
         }
@@ -56,6 +49,8 @@ class PhotoChallengeVotingRepositoryImpl(
             mockUsers.forEach { user ->
                 userDao.insertUser(user)
             }
+            val currentUser = authRepository.currentUserId
+            userDao.insertUser()
         }
     }
 
@@ -115,5 +110,29 @@ class PhotoChallengeVotingRepositoryImpl(
         }
 
         return file.name // Voici le chemin du fichier sur l'appareil
+    }
+}
+
+sealed interface MockData {
+    val emojis: Int
+    val userPictures: Set<Int>
+
+    data object Angry : MockData {
+        override val emojis: Int
+            get() = R.drawable.angry
+        override val userPictures: Set<Int>
+            get() = setOf(
+                R.drawable.angry1,
+                R.drawable.angry2,
+                R.drawable.angry3,
+                R.drawable.enerve
+            )
+    }
+
+    data object Sad : MockData {
+        override val emojis: Int
+            get() = R.drawable.pensive
+        override val userPictures: Set<Int>
+            get() = setOf(R.drawable.sad1, R.drawable.sad2, R.drawable.sad3, R.drawable.sad4)
     }
 }

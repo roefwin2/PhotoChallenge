@@ -12,42 +12,53 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material.icons.filled.FilePresent
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.photochallenge.R
+import com.example.photochallenge.activity.MainViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CameraPreviewWithPicture(
     controller: LifecycleCameraController,
     modifier: Modifier = Modifier,
-    emojiSet: Set<Int> = setOf(
-        R.drawable.grin,
-        R.drawable.pensive,
-        R.drawable.innocent,
-        R.drawable.face_vomiting,
-        R.drawable.ic_launcher_foreground
-    ),
+    mainViewModel: MainViewModel = koinViewModel(),
     onClickToTakePhoto: () -> Unit,
 ) {
-    val selectedEmoji = emojiSet.random()
+    val selectedEmoji = mainViewModel.state.value.selectedEmoji ?: R.drawable.angry1
     Box(
         modifier = modifier.padding(vertical = 60.dp)
     ) {
+        Text(
+            text = "Imiter l'image à droite",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
+
         CameraPreview(
             controller = controller,
             modifier = Modifier
                 .fillMaxSize()
+                .clip(
+                    RoundedCornerShape(16.dp)
+                )
         )
         Box(
             modifier = Modifier

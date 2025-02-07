@@ -79,10 +79,10 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.fillMaxWidth(),
                                 onValidatePhoto = {
                                     viewModel.onSavePhoto()
-                                    navController.navigate("voting")
                                     coroutineScope.launch {
                                         scaffoldState.bottomSheetState.hide()
                                     }
+                                    navController.navigate("voting")
                                 },
                                 retryPhoto = {
                                     viewModel.onPremiumFeature()

@@ -102,6 +102,7 @@ fun PhotoChallengeNavigation(
                 PhotoChallengeStandingScreen()
             }
             composable("takePicture") {
+
                 CameraPreviewWithPicture(
                     controller = controller,
                     onClickToTakePhoto = { onClickToTakePhoto.invoke() }

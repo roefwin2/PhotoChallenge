@@ -46,12 +46,19 @@ fun PhotoChallengeStandingScreen(
 ) {
     val state = viewModel.standingState.collectAsState().value
     if (state.isSuccess) {
-        val users = state.getOrThrow()
+        val users = state.getOrThrow().sortedByDescending { it.currentPictureUri?.votingCount }
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ) {
+            Text(
+                text = "Vainqueur du dernier challenge",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(24.dp)
+            )
+
             // Top Section avec les 3 premiers
             TopThreeSection(users.take(3))
 
