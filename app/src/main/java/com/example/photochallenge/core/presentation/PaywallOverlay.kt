@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
@@ -54,6 +55,7 @@ fun PaywallOverlay(
                     Text(
                         text = "Abonnez-vous pour accéder à tout le contenu",
                         style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center,
                         color = Color.White
                     )
 

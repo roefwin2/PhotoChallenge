@@ -58,7 +58,7 @@ fun PhotoChallengeNavigation(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-   // Avoid bottom bar on auth screen
+    // Avoid bottom bar on auth screen
     val shouldShowBottomBar = currentRoute != "auth"
 
     Scaffold(
@@ -140,11 +140,16 @@ fun PhotoChallengeNavigation(
             )) {
                 CameraPreviewWithPicture(
                     controller = controller,
+                    onVideoCallClick = { onPremiumFeatureClick.invoke("video") },
                     onClickToTakePhoto = { onClickToTakePhoto.invoke() }
                 )
             }
             composable("voting") {
-                PhotoChallengeVotingScreen()
+                PhotoChallengeVotingScreen(onFinishVoting = {
+                    navController.navigate("standing") {
+                        popUpTo("voting") { inclusive = true }
+                    }
+                })
             }
             composable("premium") {
                 PremiumScreen { onPremiumFeatureClick.invoke(it) }

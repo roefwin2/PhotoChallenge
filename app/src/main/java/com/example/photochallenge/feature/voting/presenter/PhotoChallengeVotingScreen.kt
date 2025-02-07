@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,7 +40,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun PhotoChallengeVotingScreen(
     modifier: Modifier = Modifier,
-    viewModel: PhotoChallengeVotingViewModel = koinViewModel()
+    viewModel: PhotoChallengeVotingViewModel = koinViewModel(),
+    onFinishVoting: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState(pageCount = { state.photos.size })
@@ -50,7 +53,7 @@ fun PhotoChallengeVotingScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(36.dp)
+            .padding(24.dp)
             .clip(MaterialTheme.shapes.medium)
     ) {
         HorizontalPager(
@@ -176,6 +179,17 @@ fun PhotoChallengeVotingScreen(
                     )
                 }
             }
+        }
+        Button(
+            onClick = {
+                onFinishVoting.invoke()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(top = 36.dp, start = 24.dp, end = 24.dp)
+        ) {
+            Text("Validater le vote")
         }
     }
 

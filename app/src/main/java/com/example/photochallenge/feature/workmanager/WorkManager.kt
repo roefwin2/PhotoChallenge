@@ -43,27 +43,27 @@ class NotificationWorker(
             }
             notificationManager.createNotificationChannel(channel)
         }
-        val dailyIntent = Intent(applicationContext, MainActivity::class.java).apply {
+        val challengeIntent = Intent(applicationContext, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             action = MainActivity.NOTIFICATION_DAILY_CHALLENGE
-            data = Uri.parse("android-app://androidx.navigation/takePicture")
+            data = Uri.parse("app://androidx.navigation/takePicture")
         }
-        val dailyPendingIntent = PendingIntent.getActivity(
+        val challengePendingIntent = PendingIntent.getActivity(
             applicationContext,
             0,
-            dailyIntent,
+            challengeIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val profileIntent = Intent(applicationContext, MainActivity::class.java).apply {
+        val standingIntent = Intent(applicationContext, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             action = MainActivity.NOTIFICATION_DAILY_STANDING
-            data = Uri.parse("android-app://androidx.navigation/standing")
+            data = Uri.parse("app://androidx.navigation/standing")
         }
-        val profilePendingIntent = PendingIntent.getActivity(
+        val standingPendingIntent = PendingIntent.getActivity(
             applicationContext,
             1,
-            profileIntent,
+            standingIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
@@ -88,14 +88,14 @@ class NotificationWorker(
             .addAction(
                 android.R.drawable.ic_media_play,
                 "Relever le défi",
-                dailyPendingIntent
+                challengePendingIntent
             )
             .addAction(
                 android.R.drawable.ic_dialog_info,
-                "Mon profil",
-                profilePendingIntent
+                "Mon classement",
+                standingPendingIntent
             )
-            .setContentIntent(dailyPendingIntent)
+            .setContentIntent(challengePendingIntent)
             .setStyle(NotificationCompat.BigTextStyle())
 
         try {

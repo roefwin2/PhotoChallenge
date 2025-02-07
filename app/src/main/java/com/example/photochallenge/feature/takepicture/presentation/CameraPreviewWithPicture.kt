@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material.icons.filled.FilePresent
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -41,6 +42,7 @@ fun CameraPreviewWithPicture(
     controller: LifecycleCameraController,
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel = koinViewModel(),
+    onVideoCallClick: () -> Unit,
     onClickToTakePhoto: () -> Unit,
 ) {
     val selectedEmoji = mainViewModel.state.value.selectedEmoji ?: R.drawable.angry1
@@ -70,11 +72,12 @@ fun CameraPreviewWithPicture(
         ) {
             IconButton(
                 onClick = {
+                    onVideoCallClick.invoke()
                 },
                 modifier = Modifier.offset(8.dp, 8.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Default.FilePresent,
+                    imageVector = Icons.Default.Videocam,
                     contentDescription = "Camera switch"
                 )
             }

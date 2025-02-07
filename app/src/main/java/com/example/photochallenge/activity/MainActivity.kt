@@ -176,14 +176,19 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun navigateFromDeeplink(action: String?, navController: NavController) {
-        when (action) {
-            MainActivity.NOTIFICATION_DAILY_CHALLENGE -> {
-                navController.navigate("takePicture")
-            }
+        try {
+            when (action) {
+                MainActivity.NOTIFICATION_DAILY_CHALLENGE -> {
+                    navController.navigate("takePicture")
+                }
 
-            MainActivity.NOTIFICATION_DAILY_STANDING -> {
-                navController.navigate("standing")
+                MainActivity.NOTIFICATION_DAILY_STANDING -> {
+                    navController.navigate("standing")
+                }
             }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error navigating from deeplink", e)
+
         }
     }
 }
