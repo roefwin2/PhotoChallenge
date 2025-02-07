@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,9 +35,7 @@ fun PhotoBottomSheetContent(
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (bitmap == null) {
-            Text(text = "No photo taken")
-        } else {
+        if (bitmap != null) {
             Image(
                 bitmap =
                 bitmap.asImageBitmap(),

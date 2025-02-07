@@ -1,21 +1,23 @@
 package com.example.photochallenge.activity
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.photochallenge.authentification.data.MockData
 import com.example.photochallenge.authentification.data.local.entity.bitmapToByteArray
+import com.example.photochallenge.authentification.domain.PhotoChallengeAuthRepository
 import com.example.photochallenge.takepicture.domain.PhotoChallengeTakePictureRepository
 import com.example.photochallenge.utils.ImageStorage
-import com.example.photochallenge.voting.data.MockData
-import com.example.photochallenge.voting.domain.PhotoChallengeVotingRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val photoChallengeTakePictureRepository: PhotoChallengeTakePictureRepository,
-    private val photoChallengeVotingRepository: PhotoChallengeVotingRepository,
+    private val authRepository: PhotoChallengeAuthRepository,
     private val imageStorage: ImageStorage
 ) : ViewModel() {
 
@@ -23,15 +25,20 @@ class MainViewModel(
     val state = _state.asStateFlow()
 
     init {
-        val mockUsers = setOf(MockData.Angry,MockData.Sad)
+        val mockUsers = setOf(MockData.Angry, MockData.Sad)
         val selectedData = mockUsers.random()
         _state.value = state.value.copy(
             selectedEmoji = selectedData.emojis
         )
         viewModelScope.launch(Dispatchers.Default) {
-            photoChallengeVotingRepository.initMockUsers(selectedData.userPictures)
+            authRepository.initMockUsers(selectedData.userPictures).collectLatest {
+                it.onSuccess {
+                    Log.d("MainViewModel", "Mock users initialized")
+                }
+            }
         }
     }
+
     fun onTakenPhoto(bitmap: Bitmap) {
         _state.value = state.value.copy(
             bitmap = bitmap

@@ -26,7 +26,7 @@ class PhotoChallengeVotingViewModel(
     private fun fetchUsers() {
         val currentUser = photoChallengeAuthRepository.currentUserId ?: return
         viewModelScope.launch {
-            votingRepository.getUsers().collectLatest { result ->
+            photoChallengeAuthRepository.getUsers().collectLatest { result ->
                 result.onSuccess { users ->
                     _state.update { currentState ->
                         currentState.copy(

@@ -106,7 +106,10 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         onPremiumFeatureClick = {
-                            viewModel.onPremiumFeature()
+                            coroutineScope.launch {
+                                viewModel.onPremiumFeature()
+                                scaffoldState.bottomSheetState.expand()
+                            }
                         }
                     )
                 }

@@ -5,5 +5,5 @@ import com.example.photochallenge.authentification.domain.PhotoChallengeAuthRepo
 import org.koin.dsl.module
 
 val authDataModule = module {
-    single<PhotoChallengeAuthRepository> { PhotoChallengeAuthRepositoryImpl(get()) }
+    single<PhotoChallengeAuthRepository> { PhotoChallengeAuthRepositoryImpl(get(), get(), get()) }
 }

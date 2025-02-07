@@ -9,8 +9,6 @@ val votingDataModule = module {
         PhotoChallengeVotingRepositoryImpl(
             get(),
             get(),
-            get(),
-            get()
         )
     }
 }

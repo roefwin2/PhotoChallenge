@@ -1,24 +1,21 @@
 package com.example.photochallenge.voting.presenter
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -68,9 +65,10 @@ fun PhotoChallengeVotingScreen(
                     contentScale = ContentScale.Crop
                 )
 
+                // Compteur de votes en haut à droite
                 Surface(
                     modifier = Modifier
-                        .align(Alignment.TopEnd)
+                        .align(Alignment.TopCenter)
                         .padding(16.dp),
                     color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
                     shape = MaterialTheme.shapes.medium
@@ -94,73 +92,96 @@ fun PhotoChallengeVotingScreen(
             }
         }
 
+        // Zone de contrôle en bas
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp),
+                .padding(bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            // Votes restants
             Surface(
                 color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
                 shape = MaterialTheme.shapes.medium
             ) {
                 Text(
                     text = "Votes restants : ${state.remainingVotes}",
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
 
+            // Contrôles de vote
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                // Bouton de vote
-                Button(
-                    onClick = { viewModel.voteForPhoto(+1, pagerState.currentPage) },
-                    enabled = state.remainingVotes > 0
-                ) {
-                    Icon(
-                        imageVector = if (state.remainingVotes > 0) Icons.Default.FavoriteBorder else Icons.Default.Favorite,
-                        contentDescription = "Voter"
+                modifier = Modifier
+                    .background(
+                        MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+                        MaterialTheme.shapes.medium
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Voter")
-                }
-
-                // Bouton de réinitialisation des votes
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 IconButton(
-                    onClick = { viewModel.voteForPhoto(-1, pagerState.currentPage) }
+                    onClick = { viewModel.voteForPhoto(+1, pagerState.currentPage) },
+                    enabled = state.remainingVotes > 0,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary.copy(alpha = if (state.remainingVotes > 0) 0.1f else 0.05f),
+                            CircleShape
+                        )
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = "Réinitialiser les votes"
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Ajouter un vote",
+                        tint = if (state.remainingVotes > 0)
+                            MaterialTheme.colorScheme.primary
+                        else
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                    )
+                }
+                IconButton(
+                    onClick = { viewModel.voteForPhoto(-1, pagerState.currentPage) },
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                            CircleShape
+                        )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Remove,
+                        contentDescription = "Retirer un vote",
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             }
-        }
 
-        // Indicateurs de page
-        Row(
-            Modifier
-                .height(50.dp)
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 80.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            repeat(state.photos.size) { iteration ->
-                val color = if (pagerState.currentPage == iteration) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+            // Indicateurs de page
+            Row(
+                modifier = Modifier
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                repeat(state.photos.size) { iteration ->
+                    Box(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .size(8.dp)
+                            .background(
+                                color = if (pagerState.currentPage == iteration) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                                },
+                                shape = CircleShape
+                            )
+                    )
                 }
-                Box(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .size(8.dp)
-                )
             }
         }
     }
+
 }
