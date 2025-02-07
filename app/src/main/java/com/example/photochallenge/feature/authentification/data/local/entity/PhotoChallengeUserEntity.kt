@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.photochallenge.feature.authentification.domain.mdoels.PhotoChallengePicture
-import com.example.photochallenge.feature.authentification.domain.mdoels.PhotoChallengeUser
+import com.example.photochallenge.feature.authentification.domain.models.PhotoChallengePicture
+import com.example.photochallenge.feature.authentification.domain.models.PhotoChallengeUser
 import com.example.photochallenge.core.utils.ImageStorage
 import java.io.ByteArrayOutputStream
 
@@ -47,6 +47,6 @@ fun byteArrayToBitmap(byteArray: ByteArray?): Bitmap? {
 
 fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
     val stream = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream) // PNG garde la qualité, JPEG réduit la taille
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
     return stream.toByteArray()
 }

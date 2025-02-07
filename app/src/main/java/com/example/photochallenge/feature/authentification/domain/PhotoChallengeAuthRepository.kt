@@ -1,6 +1,6 @@
 package com.example.photochallenge.feature.authentification.domain
 
-import com.example.photochallenge.feature.authentification.domain.mdoels.PhotoChallengeUser
+import com.example.photochallenge.feature.authentification.domain.models.PhotoChallengeUser
 import kotlinx.coroutines.flow.Flow
 
 interface PhotoChallengeAuthRepository {

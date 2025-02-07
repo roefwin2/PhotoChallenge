@@ -3,9 +3,11 @@
 package com.example.photochallenge.activity
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -26,8 +28,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.photochallenge.core.presentation.PaywallOverlay
 import com.example.photochallenge.navigation.PhotoChallengeNavigation
@@ -44,6 +48,13 @@ class MainActivity : ComponentActivity() {
         if (!hasRequiredPermission()) {
             requestPermissions(CAMERAX_PERMISSION, 0)
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                100
+            )
+        }
+        val action = intent.action
         enableEdgeToEdge()
         setContent {
             PhotoChallengeTheme {
@@ -113,6 +124,7 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                 }
+                navigateFromDeeplink(action, navController)
             }
         }
     }
@@ -156,8 +168,22 @@ class MainActivity : ComponentActivity() {
     }
 
     companion object {
+        const val NOTIFICATION_DAILY_CHALLENGE = "DAILY_CHALLENGE"
+        const val NOTIFICATION_DAILY_STANDING = "DAILY_STANDING"
         private val CAMERAX_PERMISSION = arrayOf(
             Manifest.permission.CAMERA,
         )
+    }
+
+    private fun navigateFromDeeplink(action: String?, navController: NavController) {
+        when (action) {
+            MainActivity.NOTIFICATION_DAILY_CHALLENGE -> {
+                navController.navigate("takePicture")
+            }
+
+            MainActivity.NOTIFICATION_DAILY_STANDING -> {
+                navController.navigate("standing")
+            }
+        }
     }
 }

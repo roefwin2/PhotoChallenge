@@ -3,7 +3,7 @@ package com.example.photochallenge.feature.voting.presenter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.photochallenge.feature.authentification.domain.PhotoChallengeAuthRepository
-import com.example.photochallenge.feature.authentification.domain.mdoels.PhotoChallengePicture
+import com.example.photochallenge.feature.authentification.domain.models.PhotoChallengePicture
 import com.example.photochallenge.feature.voting.domain.PhotoChallengeVotingRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
