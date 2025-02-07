@@ -25,11 +25,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.photochallenge.authentification.presentation.login.PhotoChallengeAuthScreen
-import com.example.photochallenge.premiumfeatures.presentation.PremiumScreen
-import com.example.photochallenge.standing.presentation.PhotoChallengeStandingScreen
-import com.example.photochallenge.takepicture.presentation.CameraPreviewWithPicture
-import com.example.photochallenge.voting.presenter.PhotoChallengeVotingScreen
+import com.example.photochallenge.activity.MainViewModel
+import com.example.photochallenge.feature.authentification.presentation.login.PhotoChallengeAuthScreen
+import com.example.photochallenge.feature.premiumfeatures.presentation.PremiumScreen
+import com.example.photochallenge.feature.standing.presentation.PhotoChallengeStandingScreen
+import com.example.photochallenge.feature.takepicture.presentation.CameraPreviewWithPicture
+import com.example.photochallenge.feature.voting.presenter.PhotoChallengeVotingScreen
+import org.koin.androidx.compose.koinViewModel
 
 
 data class BottomNavItem(
@@ -128,7 +130,6 @@ fun PhotoChallengeNavigation(
                 PhotoChallengeStandingScreen()
             }
             composable("takePicture") {
-
                 CameraPreviewWithPicture(
                     controller = controller,
                     onClickToTakePhoto = { onClickToTakePhoto.invoke() }

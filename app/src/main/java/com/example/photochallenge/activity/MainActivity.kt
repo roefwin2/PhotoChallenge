@@ -31,7 +31,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.photochallenge.core.presentation.PaywallOverlay
 import com.example.photochallenge.navigation.PhotoChallengeNavigation
-import com.example.photochallenge.takepicture.presentation.PhotoBottomSheetContent
+import com.example.photochallenge.feature.takepicture.presentation.PhotoBottomSheetContent
 import com.example.photochallenge.ui.theme.PhotoChallengeTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel

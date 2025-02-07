@@ -3,8 +3,8 @@ package com.example.photochallenge.application.di
 import android.content.Context
 import androidx.room.Room
 import com.example.photochallenge.activity.MainViewModel
-import com.example.photochallenge.authentification.data.local.dao.PhotoChallengeUserDao
-import com.example.photochallenge.authentification.data.local.database.PhotoChallengeDatabase
+import com.example.photochallenge.feature.authentification.data.local.dao.PhotoChallengeUserDao
+import com.example.photochallenge.feature.authentification.data.local.database.PhotoChallengeDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

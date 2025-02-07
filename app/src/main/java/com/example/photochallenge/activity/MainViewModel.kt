@@ -4,11 +4,11 @@ import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.photochallenge.authentification.data.MockData
-import com.example.photochallenge.authentification.data.local.entity.bitmapToByteArray
-import com.example.photochallenge.authentification.domain.PhotoChallengeAuthRepository
-import com.example.photochallenge.takepicture.domain.PhotoChallengeTakePictureRepository
-import com.example.photochallenge.utils.ImageStorage
+import com.example.photochallenge.feature.authentification.data.MockData
+import com.example.photochallenge.feature.authentification.data.local.entity.bitmapToByteArray
+import com.example.photochallenge.feature.authentification.domain.PhotoChallengeAuthRepository
+import com.example.photochallenge.feature.takepicture.domain.PhotoChallengeTakePictureRepository
+import com.example.photochallenge.core.utils.ImageStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,6 +25,10 @@ class MainViewModel(
     val state = _state.asStateFlow()
 
     init {
+        initNewChallenge()
+    }
+
+    private fun initNewChallenge() {
         val mockUsers = setOf(MockData.Angry, MockData.Sad)
         val selectedData = mockUsers.random()
         _state.value = state.value.copy(
