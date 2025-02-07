@@ -45,6 +45,7 @@ fun PhotoChallengeNavigation(
     navController: NavHostController,
     controller: LifecycleCameraController,
     modifier: Modifier = Modifier,
+    onAuthSuccess: () -> Unit,
     onClickToTakePhoto: (() -> Unit),
     onPremiumFeatureClick: ((String) -> Unit)
 ) {
@@ -119,6 +120,7 @@ fun PhotoChallengeNavigation(
         ) {
             composable("auth") {
                 PhotoChallengeAuthScreen(onAuthSuccess = {
+                    onAuthSuccess.invoke()
                     navController.navigate("standing") {
                         popUpTo("auth") { inclusive = true }
                     }

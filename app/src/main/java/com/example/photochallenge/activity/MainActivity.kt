@@ -33,12 +33,17 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.photochallenge.core.presentation.PaywallOverlay
 import com.example.photochallenge.navigation.PhotoChallengeNavigation
 import com.example.photochallenge.feature.takepicture.presentation.PhotoBottomSheetContent
+import com.example.photochallenge.feature.workmanager.NotificationWorker
 import com.example.photochallenge.ui.theme.PhotoChallengeTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
 
@@ -108,6 +113,17 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(paddingValues),
+                        onAuthSuccess = {
+                            val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
+                                10, TimeUnit.SECONDS
+                            ).build()
+
+                            WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+                                "periodic_notification",
+                                ExistingPeriodicWorkPolicy.UPDATE,
+                                workRequest
+                            )
+                        },
                         onClickToTakePhoto = {
                             takePhoto(controller) {
                                 coroutineScope.launch {

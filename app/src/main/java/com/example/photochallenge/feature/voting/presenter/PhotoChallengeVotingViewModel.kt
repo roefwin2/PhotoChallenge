@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -26,7 +27,9 @@ class PhotoChallengeVotingViewModel(
     private fun fetchUsers() {
         val currentUser = photoChallengeAuthRepository.currentUserId ?: return
         viewModelScope.launch {
-            photoChallengeAuthRepository.getUsers().collectLatest { result ->
+            photoChallengeAuthRepository.getUsers()
+                .distinctUntilChanged()
+                .collectLatest { result ->
                 result.onSuccess { users ->
                     _state.update { currentState ->
                         currentState.copy(
@@ -44,6 +47,7 @@ class PhotoChallengeVotingViewModel(
         viewModelScope.launch {
             votingRepository.voteForPhoto(add, photoIndex).collectLatest { result ->
                 result.onSuccess {
+                    //May be search a better solution to avoid the recomposition
                     fetchUsers()
                 }
             }

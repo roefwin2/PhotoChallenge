@@ -45,15 +45,5 @@ class PhotoChallengeApplication : Application() {
                 .setMinimumLoggingLevel(android.util.Log.INFO)
                 .build()
         )
-
-        val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
-            10, TimeUnit.SECONDS
-        ).build()
-
-        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
-            "periodic_notification",
-            ExistingPeriodicWorkPolicy.UPDATE,
-            workRequest
-        )
     }
 }
